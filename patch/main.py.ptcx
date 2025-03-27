@@ -1,0 +1,63 @@
+name = "fix_add_maths"
+description = """Ensure that "add" returns the sum of *args"""
+
+friendly_query=[
+    'function name is "add"',
+    'and',
+    'function accepts arbitary positional arguments'
+    'and',
+    'function returns type int'
+]
+
+friendly_result=[
+    '* parameter name',
+    'function body'
+]
+
+query= \
+"""(function_definition
+  name: (identifier) @function.name
+  parameters: (parameters
+    (typed_parameter
+      (asterisk)  # Match the variadic argument (*nums)
+      (identifier) @param.name  # Capture the name of the variadic parameter
+      type: (type (identifier) 
+        (#eq? "int")  # The type is int
+      )
+    )
+  )
+  return_type: (type (identifier) 
+    (#eq? "int")  # The return type is int
+  )
+  body: (block) @function.body  # Match the body of the function (a block of statements)
+)
+"""
+
+replace={
+    "param.name":"nums",
+    "function.body":"return sum(nums)"
+}
+
+test_match= \
+"""
+def add(*nums:int):
+    res = sum(nums)
+
+    # obviously wrong, needs patching
+    return res + 1
+"""
+
+test_body= \
+"""res = sum(nums)
+
+# obviously wrong, needs patching
+return res + 1"""
+
+test_result={
+    "param.name":"nums",
+    "function.body":test_body
+}
+
+tests = [
+    (test_match, test_result)
+]

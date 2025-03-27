@@ -1,0 +1,7 @@
+.venv
+.idea
+
+dist
+ptcx.egg-info
+
+*/__pycache__/*

@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"*.ptcx":"python"
+		},
+		"python.pipenvPath": ".venv",
+		"terminal.integrated.env.windows": {
+			"PATH": "${workspaceFolder}\\.venv\\Scripts;${env:PATH}"
+		}
+	}
+}
