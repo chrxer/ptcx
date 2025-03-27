@@ -1,15 +1,15 @@
 [build-system]
-requires = ["setuptools>=61.0", "build", "twine"]
+requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "ptcx"
-version = "0.0.1"
+version = "0.0.2"
 authors = [
   { name="Aurin Aegerter", email="adm.chrx@gmail.com" },
 ]
 description = "A format for modularized AST-based patching of arbitary code"
-readme = "README.md"
+dynamic = ['readme', "dependencies"]
 requires-python = ">=3.11"
 classifiers = [
     "Programming Language :: Python :: 3",
@@ -18,6 +18,7 @@ classifiers = [
 license="BSD-2-Clause"
 license-files=["LICENSE"]
 
+
 [project.urls]
 Homepage = "https://github.com/chrxer/ptcx"
 Issues = "https://github.com/chrxer/ptcx/issues"
@@ -25,6 +26,9 @@ Issues = "https://github.com/chrxer/ptcx/issues"
 [tool.setuptools]
 packages = ["ptcx"]
 
-
 [project.scripts]
 hello_script = "ptcx:main"
+
+[tool.setuptools.dynamic]
+readme = {file = "README.md", content-type = "text/markdown"}
+dependencies = {file = ["requirements.txt"]}

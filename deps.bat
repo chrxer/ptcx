@@ -38,9 +38,10 @@ for /f "tokens=*" %%i in ('python%major% -c "import sys; print(sys.executable)"'
 echo "Python %pv% installed at %pexc%"
 
 
-if exist "%pexc0%" goto :venv_installed
+if exist "%cd%\.venv" goto :venv_installed
 "%pexc%" -m venv "%cd%\.venv"
 
 :venv_installed
 echo "installing python packages.."
-"%cd%\.venv\Scripts\python.exe" -m pip install --upgrade pip build
+"%cd%\.venv\Scripts\python.exe" -m pip install --upgrade pip build twine
+"%cd%\.venv\Scripts\python.exe" -m pip install -r requirements.txt

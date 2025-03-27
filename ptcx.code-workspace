@@ -11,6 +11,12 @@
 		"python.pipenvPath": ".venv",
 		"terminal.integrated.env.windows": {
 			"PATH": "${workspaceFolder}\\.venv\\Scripts;${env:PATH}"
+		},
+		"terminal.integrated.env.linux": {
+			"PATH": "${workspaceFolder}\\.venv\\Scripts:${env:PATH}"
 		}
+	},
+	"extensions": {
+		"recommendations": ["ms-python.python", "chrx.python-inline-3"]
 	}
 }
