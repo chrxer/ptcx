@@ -1,37 +1,14 @@
-import sourcetypes
+from sourcetypes import python, trs
 
 name = "fix_add_maths"
 description = """Ensure that "add" returns the sum of *args"""
 
-friendly_query=[
-    'function name is "add"',
-    'and',
-    'function accepts arbitary positional arguments'
-    'and',
-    'function returns type int'
-]
-
-friendly_result=[
-    '* parameter name',
-    'function body'
-]
-
-query= \
-"""(function_definition
+query:trs="""(function_definition
   name: (identifier) @function.name
-  parameters: (parameters
-    (typed_parameter
-      (asterisk)  # Match the variadic argument (*nums)
-      (identifier) @param.name  # Capture the name of the variadic parameter
-      type: (type (identifier) 
-        (#eq? "int")  # The type is int
-      )
-    )
-  )
-  return_type: (type (identifier) 
-    (#eq? "int")  # The return type is int
-  )
-  body: (block) @function.body  # Match the body of the function (a block of statements)
+    (#eq? @function.name "add")
+  return_type: (type (identifier) @return.type)?
+    (#eq? @return.type "int")
+  body: (block) @function.body
 )
 """
 
@@ -40,7 +17,7 @@ replace={
     "function.body":"return sum(nums)"
 }
 
-test_match:sourcetypes.python = """
+test_match:python = """
 def add(*nums:int):
     res = sum(nums)
 
@@ -48,7 +25,7 @@ def add(*nums:int):
     return res + 1
 """
 
-test_body:sourcetypes.python = """res = sum(nums)
+test_body:python = """res = sum(nums)
 
 # obviously wrong, needs patching
 return res + 1"""
