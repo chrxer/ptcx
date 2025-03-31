@@ -17,6 +17,6 @@
 		}
 	},
 	"extensions": {
-		"recommendations": ["ms-python.python", "chrx.python-inline-3"]
+		"recommendations": ["ms-python.python","ms-python.pylint", "chrx.python-inline-3"]
 	}
 }

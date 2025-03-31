@@ -1,35 +1,46 @@
-from os import PathLike, getcwd
+from os import PathLike
 from os.path import abspath
-from ptcx.utils.wrap import exc
 import shutil
 from pathlib import Path
+from typing import List, Callable
 
-WRK=Path.cwd()
-PATCH=WRK.joinpath("patch")
-SRC=WRK.joinpath("SRC")
+from ptcx.utils.imprt import fileimport
+from ptcx import BasePTC
 
-def path(path:PathLike=getcwd()):
-    path = Path(abspath(path))
-    cpr(PATCH, SRC)
-    pass
+def path(_path:PathLike=Path.cwd(), srcroot:PathLike=Path.cwd().joinpath("src"),patchroot:PathLike=Path.cwd().joinpath("patch")):
+    _path = Path(abspath(_path))
+    cpr(patchroot, srcroot)
 
-def file(path:PathLike=getcwd()):
-    path = Path(abspath(path))
-    pass
+def file(_path:PathLike,srcroot:Path=Path.cwd().joinpath("src"),patchroot:Path=Path.cwd().joinpath("patch")):
+    
+    rel_path = Path(str(_path)[:-4]).relative_to(patchroot)
+    dstpath = srcroot.joinpath(rel_path)
+    ptcxmod = fileimport(_path)
+    PTC = ptcxmod.PTC
+    if issubclass(PTC, BasePTC):
+        ptcinst = PTC(file=dstpath, srcroot=srcroot, patchroot=patchroot)
+        ptcinst._patch()
+    else:
+        raise ValueError(f"Expected class PTC (parent class of BasePTC), but got {PTC} at {rel_path}")
+    
 
-def _logpath(path, names):
+def _logpath(_path:str, names:List[str], patchroot:Path, srcroot:Path):
+    ignores = []
     for name in names:
-        _path = Path(path).joinpath(name).absolute()
-        if not _path.is_dir():
-            _rel = _path.relative_to(PATCH)
-            _str = str(_path)
+        __path = Path(_path).joinpath(name).absolute()
+        if not __path.is_dir():
+            _rel = __path.relative_to(patchroot)
+            _str = str(__path)
             if len(_str)>4 and _str[-4:]=="ptcx":
+                ignores.append(name)
                 print(f"\033[92m[patch] {_rel}\033[0m")
-                file(_path)
+                file(__path, srcroot=srcroot, patchroot=patchroot)
             else:
                 print(f"\033[92m[cp] {_rel}\033[0m")
+        elif name == "__pycache__":
+            ignores.append(name)
                 
-    return []   # nothing will be ignored
+    return ignores
 
-def cpr(src, dst):
-    shutil.copytree(src, dst, dirs_exist_ok=True, ignore=_logpath)
+def cpr(src:PathLike, dst:PathLike):
+    shutil.copytree(src, dst, dirs_exist_ok=True, ignore=lambda *a, **b:_logpath(*a, **b, srcroot=dst, patchroot=src))

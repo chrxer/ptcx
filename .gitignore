@@ -3,7 +3,6 @@
 
 dist
 ptcx.egg-info
+__pycache__/
 
-*/__pycache__/*
-
-src/extra.py
+src/

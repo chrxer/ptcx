@@ -1,40 +1,7 @@
-from sourcetypes import python, trs
+from ptcx import SPTC
+import re
 
-name = "fix_add_maths"
-description = """Ensure that "add" returns the sum of *args"""
-
-query:trs="""(function_definition
-  name: (identifier) @function.name
-    (#eq? @function.name "add")
-  return_type: (type (identifier) @return.type)?
-    (#eq? @return.type "int")
-  body: (block) @function.body
-)
-"""
-
-replace={
-    "param.name":"nums",
-    "function.body":"return sum(nums)"
-}
-
-test_match:python = """
-def add(*nums:int):
-    res = sum(nums)
-
-    # obviously wrong, needs patching
-    return res + 1
-"""
-
-test_body:python = """res = sum(nums)
-
-# obviously wrong, needs patching
-return res + 1"""
-
-test_result={
-    "param.name":"nums",
-    "function.body":test_body
-}
-
-tests = [
-    (test_match, test_result)
-]
+class PTC(SPTC):
+    def patch(self):
+      print(self.file, __file__)
+      # self.content = re.sub(r"return res \+ 1", "return res", self.content)

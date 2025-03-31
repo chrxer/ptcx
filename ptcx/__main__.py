@@ -10,6 +10,4 @@ if __name__ == "__main__":
     
     parser.add_argument('path', nargs="?", default=os.getcwd())
     args = parser.parse_args()
-    patch.path(path=os.path.abspath(args.path))
-    print(sys.argv)
-
+    patch.path(_path=os.path.abspath(args.path))
