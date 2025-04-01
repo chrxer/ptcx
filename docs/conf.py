@@ -5,19 +5,20 @@
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
-import sys
+import toml
 import importlib.metadata
 import datetime
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).parent.parent))
+ROOT=Path(__file__).parent.parent.absolute()
+TOML=toml.load(ROOT.joinpath("pyproject.toml"))                        
 
 project = 'ptcx'
 # noinspection PyShadowingBuiltins
 date = datetime.date.today().year
 copyright = '{date}, Aurin Aegerter (aka Steve, kaliiiiiiiiii)'
 author = 'Aurin Aegerter (aka Steve, kaliiiiiiiiii)'
-release =importlib.metadata.version('ptcx')
+release = TOML["project"]["version"]
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
