@@ -1,7 +1,7 @@
 # ptcx
 A format for modularized AST-based patching of arbitary code.
 
-<p align="center">
+<p>
     <a href="https://pypi.org/project/ptcx/">
         <img alt="Pypi version" src="https://img.shields.io/pypi/v/ptcx?color=blue">
     </a>
