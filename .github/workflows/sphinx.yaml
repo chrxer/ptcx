@@ -13,7 +13,7 @@ jobs:
       - name: Install deps
         run: sudo chmod +x deps.bat && ./deps.bat
       - name: build docs
-        run: mkdocs.py
+        run: ./mkdocs.py
 
       - name: Upload static files as artifact
         id: deployment
