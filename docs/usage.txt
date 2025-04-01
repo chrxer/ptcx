@@ -13,4 +13,5 @@ options:
                         Source code directory to patch
   --patchroot [PATCHROOT], --patch [PATCHROOT]
                         directory where patches are placed.
-  --reset [RESET]
+  --reset [RESET]       Resevert all uncommited changes within git repository
+                        in src

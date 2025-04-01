@@ -8,11 +8,9 @@ if __name__ == "__main__":
     parser.add_argument('path', nargs="?",type=Path, default="", help="Relative path from patchroot to patch")
     parser.add_argument('--srcroot',"--src",nargs="?",type=Path, default=CWD.joinpath("src"), help="Source code directory to patch")
     parser.add_argument("--patchroot","--patch",nargs="?",type=Path, default=CWD.joinpath("patch"), help="directory where patches are placed.")
-    parser.add_argument("--reset",nargs="?", type=bool)
+    parser.add_argument("--reset",nargs="?", type=bool, help="Resevert all uncommited changes within git repository in src")
     args = parser.parse_args()
     if args.reset is True:
-        raise NotImplementedError("Resetting the source directory isn't implemented yet")
-    if args.path.is_file():
-        patch.file(args.path, srcroot=args.srcroot, patchroot=args.patchroot)
+        patch.reset(srcroot=args.srcroot)
     else:
         patch.path(args.path, srcroot=args.srcroot, patchroot=args.patchroot)

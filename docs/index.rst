@@ -1,7 +1,7 @@
 Installation
 ------------
 
-[Source code](https://github.com/chrxer/ptcx)
+`Source code <https://github.com/chrxer/ptcx>`_
 
 .. code-block:: bash
 
@@ -11,7 +11,7 @@ Usage
 -----
 
 .. literalinclude:: usage.txt
-    :language: bash
+    :language: text
 
 Patch configuration
 -------------------
@@ -23,5 +23,11 @@ Patch configuration
 .. literalinclude:: ../patch/main.py.ptcx
     :language: python
 
+Reference
+-------------------
 .. autoclass:: ptcx.BasePTC
     :members:
+
+.. autofunction:: ptcx.patch.path
+
+.. autofunction:: ptcx.patch.reset

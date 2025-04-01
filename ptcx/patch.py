@@ -1,25 +1,47 @@
 from os import PathLike
-from os.path import abspath
 import shutil
 from pathlib import Path
-from typing import List, Callable
+from typing import List
 
 from ptcx.utils.imprt import fileimport
+from ptcx.utils.wrap import exc
 from ptcx import BasePTC
 
-def path(_path:PathLike=Path.cwd(), srcroot:PathLike=Path.cwd().joinpath("src"),patchroot:PathLike=Path.cwd().joinpath("patch")):
+def ensure_is_git_repo(srcroot:Path):
+    if not srcroot.joinpath(".git").exists():
+        exc("git", "init", cwd=srcroot)
+        exc("git", "add", "-A")
+        exc("git", "commit", "-m", "Initial commit created by ptcx")
+
+def path(_path:PathLike="", srcroot:PathLike="./src",patchroot:PathLike="./src"):
+    """path(_path="", srcroot="./src", patchroot="./")
+    Apply patch to src
+    """
+    srcroot=Path(srcroot).absolute()
+    patchroot=Path(patchroot).absolute()
+
+    ensure_is_git_repo(srcroot)
     _path = Path(patchroot).joinpath(_path)
     cpr(patchroot, srcroot)
 
-def file(_path:PathLike,srcroot:Path=Path.cwd().joinpath("src"),patchroot:Path=Path.cwd().joinpath("patch")):
-    
+def reset(srcroot:PathLike="./src"):
+    """
+    Resevert all uncommited changes within git repository in src
+    """
+    srcroot=Path(srcroot).absolute()
+    if not srcroot.joinpath(".git").exists():
+        raise EnvironmentError("Resevert all uncommited changes within git repository in src ist only possible if it is a git repository")
+    exc("git", "clean", "-d", "--force", cwd=srcroot)
+    exc("git","reset", "--hard", "--recurse-submodules", cwd=srcroot)
+
+def _patch_file(_path:PathLike,srcroot:Path=Path.cwd().joinpath("src"),patchroot:Path=Path.cwd().joinpath("patch")):
     rel_path = Path(str(_path)[:-4]).relative_to(patchroot)
     dstpath = srcroot.joinpath(rel_path)
     ptcxmod = fileimport(_path)
     PTC = ptcxmod.PTC
     if issubclass(PTC, BasePTC):
         ptcinst = PTC(file=dstpath, srcroot=srcroot, patchroot=patchroot)
-        ptcinst._patch()
+        ptcinst._patch() # pylint: disable=protected-access
     else:
         raise ValueError(f"Expected class PTC (parent class of BasePTC), but got {PTC} at {rel_path}")
     
@@ -34,7 +56,7 @@ def _logpath(_path:str, names:List[str], patchroot:Path, srcroot:Path):
             if len(_str)>4 and _str[-4:]=="ptcx":
                 ignores.append(name)
                 print(f"\033[92m[patch] {_rel}\033[0m")
-                file(__path, srcroot=srcroot, patchroot=patchroot)
+                _patch_file(__path, srcroot=srcroot, patchroot=patchroot)
             else:
                 print(f"\033[92m[cp] {_rel}\033[0m")
         elif name == "__pycache__":
