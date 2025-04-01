@@ -2,11 +2,11 @@
 A format for modularized AST-based patching of arbitary code.
 
 <p align="center">
-    <a href="">
-        <img alt="Pypi version" href="https://pypi.org/project/ptcx/" src="https://img.shields.io/pypi/v/ptcx?color=blue">
+    <a href="https://pypi.org/project/ptcx/">
+        <img alt="Pypi version" src="https://img.shields.io/pypi/v/ptcx?color=blue">
     </a>
-    <a href="">
-        <img alt="Pypi version" href="https://chrxer.github.io/ptcx/" src="https://img.shields.io/badge/Docs-blue">
+    <a href="https://chrxer.github.io/ptcx/">
+        <img alt="Pypi version" src="https://img.shields.io/badge/Docs-blue">
     </a>
 </p>
 
