@@ -1,5 +1,5 @@
 usage: python -m ptcx [-h] [--srcroot [SRCROOT]] [--patchroot [PATCHROOT]]
-                      [--reset [RESET]]
+                      [--reset | --no-reset]
                       [path]
 
 A format for modularized AST-based patching of arbitary code
@@ -13,5 +13,5 @@ options:
                         Source code directory to patch
   --patchroot [PATCHROOT], --patch [PATCHROOT]
                         directory where patches are placed.
-  --reset [RESET]       Resevert all uncommited changes within git repository
+  --reset, --no-reset   Resevert all uncommited changes within git repository
                         in src
