@@ -1,0 +1,10 @@
+/* From https://github.com/python-pillow/Pillow/blob/7c56b383ff3ef952854306bbe2c48c5e21066b9c/docs/resources/css/dark.css#L4 */
+/* For black-on-white/transparent images at handbook/text-anchors.html */
+body[data-theme="dark"] #text-anchors img {
+    filter: invert(1) brightness(0.85) hue-rotate(-60deg);
+}
+@media (prefers-color-scheme: dark) {
+    body[data-theme="auto"] #text-anchors img {
+        filter: invert(1) brightness(0.85) hue-rotate(-60deg);
+    }
+}

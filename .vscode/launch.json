@@ -16,6 +16,18 @@
             "request": "launch",
             "module": "ptcx",
             "args": ["--reset"]
-        }
+        },
+        {
+            "name": "Build",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "build"
+        },
+        {
+            "name": "mkdocs",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/mkdocs.py"
+        },
     ]
 }

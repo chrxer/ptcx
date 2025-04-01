@@ -43,5 +43,5 @@ if exist "%cd%\.venv" goto :venv_installed
 
 :venv_installed
 echo "installing python packages.."
-"%cd%\.venv\Scripts\python.exe" -m pip install --upgrade pip build twine
-"%cd%\.venv\Scripts\python.exe" -m pip install -r requirements.txt
+"%cd%\.venv\Scripts\python.exe" -m pip install --upgrade pip 
+"%cd%\.venv\Scripts\python.exe" -m pip install -r requirements.txt -r requirements-dev.txt

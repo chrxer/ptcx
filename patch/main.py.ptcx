@@ -1,7 +1,7 @@
-from ptcx import SPTC
+from ptcx import BasePTC
 import re
 
-class PTC(SPTC):
+class PTC(BasePTC):
     def patch(self):
       print(self.file, __file__)
-      # self.content = re.sub(r"return res \+ 1", "return res", self.content)
+      self.str = re.sub(r"return res \+ 1", "return res", self.str)
