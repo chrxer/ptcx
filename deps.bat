@@ -3,7 +3,7 @@
 : # This is a bash//cmd hybrid script which runs on both Windows & Linux and installs the dependencies for building chrxer.
 : # See https://stackoverflow.com/a/17623721 for details.
 : # following line is executed in bash
-:; set -e;sudo chmod +x sudo deps.sh;printf "\e[0;31m[Running %s]\033[0m sudo %s\n" "$(date +'%m-%d %T')" "deps.sh $@"; sudo ./deps.sh $@; exit 0
+:; set -e;sudo chmod +x deps.sh;printf "\e[0;31m[Running %s]\033[0m sudo %s\n" "$(date +'%m-%d %T')" "deps.sh $@"; sudo ./deps.sh $@; exit 0
 @ECHO off
 cls
 

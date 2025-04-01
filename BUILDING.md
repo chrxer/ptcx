@@ -1,7 +1,8 @@
 # Install deps
 (yes, this also runs on linux//bash)
 ```bash
-./deps.bat
+sudo chmod +x deps.bat
+sudo ./deps.bat
 ```
 
 # Build package

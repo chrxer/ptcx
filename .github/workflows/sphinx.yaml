@@ -9,11 +9,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          persist-credentials: false
 
       - name: Install deps
-        run: sudo chmod +x ./deps.bat && ./deps.bat
+        run: sudo chmod +x deps.bat && ./deps.bat
       - name: build docs
         run: mkdocs.py
 
