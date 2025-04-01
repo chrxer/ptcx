@@ -2,6 +2,7 @@ from os import PathLike
 import shutil
 from pathlib import Path
 from typing import List
+import time
 
 from ptcx.utils.imprt import fileimport
 from ptcx.utils.wrap import exc
@@ -10,8 +11,9 @@ from ptcx import BasePTC
 def ensure_is_git_repo(srcroot:Path):
     if not srcroot.joinpath(".git").exists():
         exc("git", "init", cwd=srcroot)
-        exc("git", "add", "-A")
-        exc("git", "commit", "-m", "Initial commit created by ptcx")
+        exc("git", "add", "*", cwd=srcroot)
+        exc("git", "commit", "-m", "Initial commit created by ptcx", cwd=srcroot)
+        time.sleep(1)
 
 def path(_path:PathLike="", srcroot:PathLike="./src",patchroot:PathLike="./src"):
     """path(_path="", srcroot="./src", patchroot="./")
