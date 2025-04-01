@@ -8,12 +8,7 @@ __str__ = str # pylint: disable=invalid-name
 __bytes__ = bytes # pylint: disable=invalid-name
 
 class BasePTC(ABC):
-    """
-    Example configuration
-
-    .. literalinclude:: ../patch/main.py.ptcx
-        :language: python
-    """
+    """"""
     srcroot:Path
     """source root directory to patch"""
     patchroot:Path
@@ -32,13 +27,14 @@ class BasePTC(ABC):
     @property
     def bytes(self) -> bytes:
         """
-        content of the file to patch
+        file to patch as bytes
         """
         if self._str is None:
             if self._bytes is None:
                 self._bytes = readf(self.file)
         else:
             self._bytes = self._str.encode("utf-8")
+            self._str = None
         return self._bytes
 
     @bytes.setter
@@ -75,7 +71,7 @@ class BasePTC(ABC):
     @abstractmethod
     def patch(self) -> None:
         """
-        function to impelement for patching
+        function to implement for patching
         """
 
     def postpatch(self):

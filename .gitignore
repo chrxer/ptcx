@@ -4,6 +4,5 @@
 dist
 ptcx.egg-info
 __pycache__/
-
 src/
 htmldocs/

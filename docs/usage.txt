@@ -1,0 +1,16 @@
+usage: python -m ptcx [-h] [--srcroot [SRCROOT]] [--patchroot [PATCHROOT]]
+                      [--reset [RESET]]
+                      [path]
+
+A format for modularized AST-based patching of arbitary code
+
+positional arguments:
+  path                  Relative path from patchroot to patch
+
+options:
+  -h, --help            show this help message and exit
+  --srcroot [SRCROOT], --src [SRCROOT]
+                        Source code directory to patch
+  --patchroot [PATCHROOT], --patch [PATCHROOT]
+                        directory where patches are placed.
+  --reset [RESET]

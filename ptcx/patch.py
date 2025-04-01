@@ -8,7 +8,7 @@ from ptcx.utils.imprt import fileimport
 from ptcx import BasePTC
 
 def path(_path:PathLike=Path.cwd(), srcroot:PathLike=Path.cwd().joinpath("src"),patchroot:PathLike=Path.cwd().joinpath("patch")):
-    _path = Path(abspath(_path))
+    _path = Path(patchroot).joinpath(_path)
     cpr(patchroot, srcroot)
 
 def file(_path:PathLike,srcroot:Path=Path.cwd().joinpath("src"),patchroot:Path=Path.cwd().joinpath("patch")):

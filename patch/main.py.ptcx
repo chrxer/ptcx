@@ -3,5 +3,5 @@ import re
 
 class PTC(BasePTC):
     def patch(self):
-      print(self.file, __file__)
       self.str = re.sub(r"return res \+ 1", "return res", self.str)
+      print(self.file)

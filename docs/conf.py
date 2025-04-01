@@ -5,18 +5,29 @@
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
-import toml
-import datetime
+import sys
 from pathlib import Path
-
 ROOT=Path(__file__).parent.parent.absolute()
-TOML=toml.load(ROOT.joinpath("pyproject.toml"))                        
+sys.path.append(str(ROOT))
 
-project = 'ptcx'
+import toml # pylint: disable=wrong-import-position, wrong-import-order
+import datetime # pylint: disable=wrong-import-position, wrong-import-order
+from ptcx.utils.wrap import exc  # type: ignore # pylint: disable=import-error, wrong-import-position
+
+
+
+TOML=toml.load(ROOT.joinpath("pyproject.toml"))                    
+
+project = TOML['project']['name']
 # noinspection PyShadowingBuiltins
 date = datetime.date.today().year
-copyright = '{date}, Aurin Aegerter (aka Steve, kaliiiiiiiiii)'
-author = 'Aurin Aegerter (aka Steve, kaliiiiiiiiii)'
+
+author = ""
+for _author in TOML['project']["authors"]:
+    author += f"{_author['name']};"
+author = author[:-1]
+
+copyright = f'{date}, {author}'
 release = TOML["project"]["version"]
 
 # -- General configuration ---------------------------------------------------
@@ -29,7 +40,12 @@ extensions = [
     'sphinx.ext.autosummary',
     "sphinx_autodoc_typehints",
     #"sphinx.ext.viewcode",
+    "sphinx.ext.intersphinx",
+    "sphinx_github_style"
 ]
+
+linkcode_url="https://github.com/chrxer/ptcx"
+linkcode_blob=exc("git", "rev-parse", "HEAD", dbg=False)
 
 templates_path = ['_templates']
 exclude_patterns = []
@@ -42,6 +58,8 @@ html_static_path=["_static"]
 html_css_files = [
     'css/dark.css',
 ]
+
+intersphinx_mapping = {'python': ('https://docs.python.org/3', None)}
 
 
 # -- autodoc options --

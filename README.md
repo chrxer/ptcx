@@ -1,22 +1,17 @@
 # ptcx
 A format for modularized AST-based patching of arbitary code.
 
-> [!WARNING]
-> This is only conceptual and not implemented yet.
+<p align="center">
+    <a href="">
+        <img alt="Pypi version" href="https://pypi.org/project/ptcx/" src="https://img.shields.io/pypi/v/ptcx?color=blue">
+    </a>
+    <a href="">
+        <img alt="Pypi version" href="https://chrxer.github.io/ptcx" src="https://img.shields.io/badge/Docs-blue">
+    </a>
+</p>
 
-# Usage
-Setup a directory stucture:
-1. `./src` the source code you'd like to patch
-2. `./patch` the patches to apply [docs](docs/README.md)
 
-Patch
+Installation
+```python
+python3 -m pip install ptcx
 ```
-python -m ptcx patch
-```
-Reset previous state of src
-```
-python -m ptcx reset
-```
-
-## TODO
-Add some propper docs

@@ -2,5 +2,6 @@ build
 twine 
 sphinx 
 sphinx-autodoc-typehints 
+sphinx-github-style
 furo
 toml

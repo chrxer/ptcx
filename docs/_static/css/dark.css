@@ -8,3 +8,18 @@ body[data-theme="dark"] #text-anchors img {
         filter: invert(1) brightness(0.85) hue-rotate(-60deg);
     }
 }
+
+
+/*styles for external reference links */
+body[data-theme="light"] {
+    span.linkcode-link {
+      color: #0077cc !important;
+    }
+  }
+
+  body[data-theme="dark"] {
+    span.linkcode-link {
+      color: #66ccff !important;
+    }
+  }
+  

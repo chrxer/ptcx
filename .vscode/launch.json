@@ -27,7 +27,8 @@
             "name": "mkdocs",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/mkdocs.py"
+            "program": "${workspaceFolder}/mkdocs.py",
+            "args": ["--debug"]
         },
     ]
 }
