@@ -8,7 +8,7 @@ if __name__ == "__main__":
     parser.add_argument('path', nargs="?",type=Path, default="", help="Relative path from patchroot to patch")
     parser.add_argument('--srcroot',"--src",nargs="?",type=Path, default=CWD.joinpath("src"), help="Source code directory to patch")
     parser.add_argument("--patchroot","--patch",nargs="?",type=Path, default=CWD.joinpath("patch"), help="directory where patches are placed.")
-    parser.add_argument("--reset",nargs="?", type=bool, help="Resevert all uncommited changes within git repository in src")
+    parser.add_argument("--reset",action=argparse.BooleanOptionalAction, help="Resevert all uncommited changes within git repository in src")
     args = parser.parse_args()
     if args.reset is True:
         patch.reset(srcroot=args.srcroot)
