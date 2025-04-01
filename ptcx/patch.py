@@ -16,7 +16,7 @@ def ensure_is_git_repo(srcroot:Path):
         time.sleep(1)
 
 def path(_path:PathLike="", srcroot:PathLike="./src",patchroot:PathLike="./src"):
-    """path(_path="", srcroot="./src", patchroot="./")
+    """path(_path="", srcroot="./src", patchroot="./patch")
     Apply patch to src
     """
     srcroot=Path(srcroot).absolute()
