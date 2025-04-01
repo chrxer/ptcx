@@ -15,8 +15,8 @@ def ensure_is_git_repo(srcroot:Path):
         exc("git", "commit", "-m", "Initial commit created by ptcx", cwd=srcroot)
         time.sleep(1)
 
-def path(_path:PathLike="", srcroot:PathLike="./src",patchroot:PathLike="./src"):
-    """path(_path="", srcroot="./src", patchroot="./patch")
+def path(_path:PathLike="", srcroot:PathLike="./src",patchroot:PathLike="./patch"):
+    """
     Apply patch to src
     """
     srcroot=Path(srcroot).absolute()
