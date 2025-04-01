@@ -12,7 +12,6 @@ sys.path.append(str(ROOT))
 
 import toml # pylint: disable=wrong-import-position, wrong-import-order
 import datetime # pylint: disable=wrong-import-position, wrong-import-order
-from ptcx.utils.wrap import exc  # type: ignore # pylint: disable=import-error, wrong-import-position
 
 
 
@@ -27,7 +26,7 @@ for _author in TOML['project']["authors"]:
     author += f"{_author['name']};"
 author = author[:-1]
 
-copyright = f'{date}, {author}'
+copyright = f'{date}, {author}' # pylint: disable=invalid-name, redefined-builtin
 release = TOML["project"]["version"]
 
 # -- General configuration ---------------------------------------------------
@@ -45,7 +44,6 @@ extensions = [
 ]
 
 linkcode_url="https://github.com/chrxer/ptcx"
-linkcode_blob=exc("git", "rev-parse", "HEAD", dbg=False)
 
 templates_path = ['_templates']
 exclude_patterns = []
