@@ -6,7 +6,6 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 import toml
-import importlib.metadata
 import datetime
 from pathlib import Path
 
