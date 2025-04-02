@@ -58,23 +58,11 @@ class BasePTC(ABC):
         self._str = value
 
     def _patch(self) -> None:
-        self.prepatch()
         self.patch()
-        self.postpatch()
         writef(self.bytes, self.file)
-    
-    def prepatch(self):
-        """
-        Optional prepatch override
-        """
 
     @abstractmethod
-    def patch(self) -> None:
+    def patch(self):
         """
         function to implement for patching
-        """
-
-    def postpatch(self):
-        """
-        optional postpatch override
         """
