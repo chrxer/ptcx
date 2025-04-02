@@ -12,13 +12,13 @@ body[data-theme="dark"] #text-anchors img {
 
 /*styles for external reference links */
 body[data-theme="light"] {
-    span.linkcode-link {
+    span.linkcode-link * {
       color: #0077cc !important;
     }
   }
 
   body[data-theme="dark"] {
-    span.linkcode-link {
+    span.linkcode-link * {
       color: #66ccff !important;
     }
   }
