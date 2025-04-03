@@ -37,7 +37,7 @@ def reset(srcroot:PathLike="./src"):
     exc("git","reset", "--hard", "--recurse-submodules", cwd=srcroot)
 
 def _patch_file(_path:PathLike,srcroot:Path=Path.cwd().joinpath("src"),patchroot:Path=Path.cwd().joinpath("patch")):
-    rel_path = Path(str(_path)[:-4]).relative_to(patchroot)
+    rel_path = Path(str(_path)[:-5]).relative_to(patchroot)
     dstpath = srcroot.joinpath(rel_path)
     ptcxmod = fileimport(_path)
     PTC = ptcxmod.PTC
