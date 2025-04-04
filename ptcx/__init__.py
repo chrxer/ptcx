@@ -25,6 +25,7 @@ class BasePTC(ABC):
     _bytes:__bytes__=None
     _lang:__str__=None
     _parser:Parser=None
+    _tree:Tree=None
 
     def __init__(self, file:Path, srcroot:Path, patchroot:Path):
         self.srcroot=srcroot
@@ -47,6 +48,9 @@ class BasePTC(ABC):
             value = value.encode("utf-8")
         self.bytes  # pylint: disable=pointless-statement
         self._bytes = value
+
+        # indicate that tree has changed
+        self._tree = None
     
     @property
     def lang(self):
@@ -80,7 +84,9 @@ class BasePTC(ABC):
         """"
         :py:class:`tree_sitter.Tree` based on :py:func:`ptcx.BasePTC.parser`
         """
-        return self.parser.parse(self.bytes)
+        if self._tree is None:
+            self._tree = self.parser.parse(self.bytes)
+        return self._tree
 
     def _patch(self) -> None:
         self.patch()
