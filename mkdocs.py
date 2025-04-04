@@ -5,6 +5,7 @@ import http.server
 import socketserver
 import webbrowser
 import sys
+from time import perf_counter
 from threading import Thread
 from sphinx.cmd.build import build_main
 from ptcx.utils.wrap import exc
@@ -21,9 +22,16 @@ class Handler(http.server.SimpleHTTPRequestHandler):
     def log_message(self, *args):
         pass
 
-def serve():
-    with socketserver.TCPServer(("", PORT), Handler) as httpd:
-        httpd.serve_forever()
+def serve(start_timeout:float=10):
+    start = perf_counter()
+    while True:
+        try:
+            with socketserver.TCPServer(("", PORT), Handler) as httpd:
+                httpd.serve_forever()
+        except OSError as e:
+            if (perf_counter()-start)>=start_timeout:
+                raise e
+        break
 
 
 if __name__ == "__main__":

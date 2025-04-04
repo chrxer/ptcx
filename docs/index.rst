@@ -13,6 +13,12 @@ Usage
 .. literalinclude:: usage.txt
     :language: text
 
+Or over python:
+
+.. autofunction:: ptcx.patch.path
+
+.. autofunction:: ptcx.patch.reset
+
 Patch configuration
 -------------------
 
@@ -28,6 +34,8 @@ Reference
 .. autoclass:: ptcx.BasePTC
     :members:
 
-.. autofunction:: ptcx.patch.path
+.. toctree::
+    :glob:
+    :maxdepth: 2
 
-.. autofunction:: ptcx.patch.reset
+    reference/*

@@ -37,11 +37,14 @@ extensions = [
     'sphinx.ext.doctest',
     'sphinx.ext.autodoc',
     'sphinx.ext.autosummary',
-    "sphinx_autodoc_typehints",
+    
     #"sphinx.ext.viewcode",
     "sphinx.ext.intersphinx",
-    "sphinx_github_style"
+    "sphinx_github_style",
+    "sphinx_autodoc_typehints",
 ]
+
+always_document_param_types=True
 
 linkcode_url="https://github.com/chrxer/ptcx"
 
@@ -57,7 +60,10 @@ html_css_files = [
     'css/dark.css',
 ]
 
-intersphinx_mapping = {'python': ('https://docs.python.org/3', None)}
+intersphinx_mapping = {
+        'python': ('https://docs.python.org/3', None),
+        'tree_sitter':('https://tree-sitter.github.io/py-tree-sitter/', None)
+    }
 
 
 # -- autodoc options --

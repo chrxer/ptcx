@@ -3,5 +3,6 @@ import re
 
 class PTC(BasePTC):
     def patch(self):
-      self.str = re.sub(r"return res \+ 1", "return res", self.str)
+      self.sub(r"return res \+ 1", "return res")
+      tree = self.tree
       print(self.file)

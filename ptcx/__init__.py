@@ -1,8 +1,14 @@
 """""" # pylint: disable=empty-docstring
 from abc import ABC, abstractmethod
 from pathlib import Path
+from typing import Union, Callable
+from os import PathLike
+import re
+from re import Match
 
-from ptcx.utils.fs import readf, reads, writef, writes
+from ptcx.utils.fs import readf, writef
+from ptcx.utils import langs
+from tree_sitter import Parser, Tree
 
 __str__ = str # pylint: disable=invalid-name
 __bytes__ = bytes # pylint: disable=invalid-name
@@ -17,7 +23,8 @@ class BasePTC(ABC):
     """absolute path of the file to patch"""
 
     _bytes:__bytes__=None
-    _str:__str__=None
+    _lang:__str__=None
+    _parser:Parser=None
 
     def __init__(self, file:Path, srcroot:Path, patchroot:Path):
         self.srcroot=srcroot
@@ -25,37 +32,55 @@ class BasePTC(ABC):
         self.file=file
     
     @property
-    def bytes(self) -> bytes:
+    def bytes(self) -> __bytes__:
         """
-        file to patch as bytes
+        File to patch as bytes based on :py:func:`ptcx.BasePTC.file`.
+        Setting it to str will automatically convert it to bytes (utf-8 encoded)
         """
-        if self._str is None:
-            if self._bytes is None:
-                self._bytes = readf(self.file)
-        else:
-            self._bytes = self._str.encode("utf-8")
-            self._str = None
+        if self._bytes is None:
+            self._bytes = readf(self.file)
         return self._bytes
 
     @bytes.setter
-    def bytes(self, value):
+    def bytes(self, value:Union[__bytes__, str]):
+        if isinstance(value, str):
+            value = value.encode("utf-8")
         self.bytes  # pylint: disable=pointless-statement
         self._bytes = value
     
     @property
-    def str(self) -> str:
+    def lang(self):
         """
-        file to patch as str
+        (programming) Language of the file to patch based on :py:func:`ptcx.BasePTC.file` and based on :py:func:`ptcx.BasePTC.bytes`.
         """
-        if self._str is None:
-            self._str = self.bytes.decode("utf-8")
-            self._bytes = None
-        return self._str
+        if self._lang is None:
+            self.lang = self.file
+        return self._lang
+
+    @lang.setter
+    def lang(self, value:PathLike):
+        self._lang = langs.guess(value)
     
-    @str.setter
-    def str(self, value):
-        self.str  # pylint: disable=pointless-statement
-        self._str = value
+    @property
+    def parser(self) -> Parser:
+        """"
+        :py:class:`tree_sitter.Parser` based on :py:func:`ptcx.BasePTC.lang`
+        """
+        if self._parser is None:
+            self._parser = langs.get_parser(self.lang)
+        return self._parser
+    
+    @parser.setter
+    def parser(self, value:Parser) -> str:
+        assert isinstance(value, Parser)
+        self._parser = value
+    
+    @property
+    def tree(self)->Tree:
+        """"
+        :py:class:`tree_sitter.Tree` based on :py:func:`ptcx.BasePTC.parser`
+        """
+        return self.parser.parse(self.bytes)
 
     def _patch(self) -> None:
         self.patch()
@@ -66,3 +91,19 @@ class BasePTC(ABC):
         """
         function to implement for patching
         """
+    
+    def insert(self,pattern:Union[str, __bytes__], insert_func:Callable[[Union[__bytes__]], Union[str, __bytes__]]) -> __bytes__:
+        """
+        Wraps :py:func:`ptcx.utils.langs.search_and_insert` for :py:func:`ptcx.BasePTC.bytes`.
+        """
+        return langs.search_and_insert(self.bytes, pattern, insert_func)
+
+    def sub(self,pattern:Union[str, __bytes__],repl:Union[str, bytes], **kwargs):
+        """
+        :py:func:`re.sub` on :py:func:`ptcx.BasePTC.bytes`
+        """
+        if isinstance(pattern, str):
+            pattern = pattern.encode("utf-8")
+        if isinstance(repl, str):
+            repl=repl.encode("utf-8")
+        self.bytes = re.sub(pattern, repl, self.bytes, **kwargs)

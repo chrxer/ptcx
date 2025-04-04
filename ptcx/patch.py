@@ -1,8 +1,9 @@
 from os import PathLike
 import shutil
 from pathlib import Path
-from typing import List
+from typing import List, Callable, Union
 import time
+import re
 
 from ptcx.utils.imprt import fileimport
 from ptcx.utils.wrap import exc
@@ -68,3 +69,19 @@ def _logpath(_path:str, names:List[str], patchroot:Path, srcroot:Path):
 
 def cpr(src:PathLike, dst:PathLike):
     shutil.copytree(src, dst, dirs_exist_ok=True, ignore=lambda *a, **b:_logpath(*a, **b, srcroot=dst, patchroot=src))
+
+def search_and_insert(text:str, pattern:str, insert_func:Callable[[str], str]):
+        """
+        finds match & replaces inserts string at
+        """
+        match = re.search(pattern, text, flags=re.MULTILINE)
+
+        if not match:
+            raise ValueError(f"Pattern '{pattern}' not found in the text.")
+
+        start, end = match.span(1)
+        matched_text = text[start:end]
+        modified_text = insert_func(matched_text)
+        updated_text = text[:start] + modified_text + text[end:]
+
+        return updated_text

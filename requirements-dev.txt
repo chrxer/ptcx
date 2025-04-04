@@ -5,3 +5,5 @@ sphinx-autodoc-typehints
 sphinx-github-style
 furo
 toml
+tree_sitter_cpp
+tree_sitter_python
