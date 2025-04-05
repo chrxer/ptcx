@@ -20,7 +20,7 @@ asu() {
 
 WRK=$(dirname "$0")
 if [ -z "$WRK" ] || [ "$WRK" = "." ]; then
-  WRK="$(pwd)"
+   WRK="$GITHUB_WORKSPACE"
 fi
 
 asu  apt install python3
