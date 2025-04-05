@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash 
 
 set -e
 
@@ -19,8 +19,12 @@ asu() {
 }
 
 WRK=$(dirname "$0")
+if [ -z "$WRK" ] || [ "$WRK" = "." ]; then
+  WRK="$(pwd)"
+fi
 
 asu  apt install python3
+echo "WRK:$WRK"
 if [ ! -d "$WRK/.venv" ]; then
   nsu python3 -m venv $WRK/.venv
 fi

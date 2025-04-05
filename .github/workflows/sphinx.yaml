@@ -11,7 +11,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Install deps
-        run: sudo chmod +x deps.bat && ./deps.bat
+        run: ./deps.bat
       - name: build docs
         run: ./mkdocs.py
 
