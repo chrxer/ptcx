@@ -19,16 +19,12 @@ asu() {
 }
 
 WRK=$(dirname "$0")
-if [ -z "$WRK" ] || [ "$WRK" = "." ]; then
-   WRK="$GITHUB_WORKSPACE"
-fi
-
 asu  apt install python3
 echo "WRK:$WRK"
 if [ ! -d "$WRK/.venv" ]; then
   nsu python3 -m venv $WRK/.venv
 fi
 
-asu sudo chmod +x $WRK/mkdocs.py
+nsu sudo chmod +x $WRK/mkdocs.py
 nsu $WRK/.venv/bin/python3 -m pip install --upgrade pip 
 nsu $WRK/.venv/bin/python3 -m pip install -r $WRK/requirements.txt -r $WRK/requirements-dev.txt
