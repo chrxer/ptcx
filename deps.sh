@@ -10,7 +10,11 @@ USER=$(awk -F: '$3 >= 1000 && $3 < 60000 {print $1; exit}' /etc/passwd)
 
 nsu() {
     printf "\033[94m[EXC %s]\033[0m %s\n" "$(stmp)" "$*"
-    sudo -u "$USER" env "PATH=$PATH" "$@"
+    if [[ ! -z "$CI" ]]; then
+        sudo "$@"
+    else
+        sudo -u "$USER" env "PATH=$PATH" "$@"
+    fi
 }
 
 asu() {
