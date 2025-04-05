@@ -18,12 +18,13 @@ asu() {
     sudo env "PATH=$PATH" "$@"
 }
 
+WRK=$(dirname "$0")
+
 asu  apt install python3
 if [ ! -d "$WRK/.venv" ]; then
-  nsu python3 -m venv $WRK.venv
+  nsu python3 -m venv $WRK/.venv
 fi
 
-WRK=$(dirname "$0")
 asu sudo chmod +x $WRK/mkdocs.py
 nsu $WRK/.venv/bin/python3 -m pip install --upgrade pip 
 nsu $WRK/.venv/bin/python3 -m pip install -r $WRK/requirements.txt -r $WRK/requirements-dev.txt
