@@ -23,7 +23,7 @@ nsu() {
     printf "\033[94m[EXC %s]\033[0m %s\n" "$(stmp)" "$*"
     if [[ "$FORCESU" == "1" ]]; then
         sudo env "PATH=$PATH" "$@"
-    else:
+    else
         sudo -u "$USER" env "PATH=$PATH" "$@"
     fi
 }
