@@ -19,9 +19,11 @@ asu() {
 }
 
 asu  apt install python3
-if [ ! -d ".venv" ]; then
-  nsu python3 -m venv .venv
+if [ ! -d "$WRK/.venv" ]; then
+  nsu python3 -m venv $WRK.venv
 fi
-asu sudo chmod +x mkdocs.py
-nsu ./.venv/bin/python3 -m pip install --upgrade pip 
-nsu ./.venv/bin/python3 -m pip install -r requirements.txt -r requirements-dev.txt
+
+WRK=$(dirname "$0")
+asu sudo chmod +x $WRK/mkdocs.py
+nsu $WRK/.venv/bin/python3 -m pip install --upgrade pip 
+nsu $WRK/.venv/bin/python3 -m pip install -r $WRK/requirements.txt -r $WRK/requirements-dev.txt
