@@ -104,7 +104,7 @@ class BasePTC(ABC):
         """
         self.bytes = langs.search_and_insert(self.bytes, pattern, insert_func)
 
-    def sub(self,pattern:Union[str, __bytes__],repl:Union[str, bytes], **kwargs):
+    def sub(self,pattern:Union[str, __bytes__],repl:Union[str, __bytes__], **kwargs):
         """
         :py:func:`re.sub` on :py:func:`ptcx.BasePTC.bytes`
         """
