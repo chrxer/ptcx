@@ -37,7 +37,6 @@ asu() {
 WRK=$(dirname "$0")
 
 asu  apt install python3
-echo "WRK:$WRK"
 if [ ! -d "$WRK/.venv" ]; then
   nsu python3 -m venv $WRK/.venv
 fi
