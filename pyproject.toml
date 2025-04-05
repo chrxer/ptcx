@@ -23,8 +23,9 @@ license-files=["LICENSE"]
 Homepage = "https://github.com/chrxer/ptcx"
 Issues = "https://github.com/chrxer/ptcx/issues"
 
-[tool.setuptools]
-packages = ["ptcx"]
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["ptcx"]
 
 [project.scripts]
 hello_script = "ptcx:main"

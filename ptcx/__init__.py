@@ -98,11 +98,11 @@ class BasePTC(ABC):
         function to implement for patching
         """
     
-    def insert(self,pattern:Union[str, __bytes__], insert_func:Callable[[Union[__bytes__]], Union[str, __bytes__]]) -> __bytes__:
+    def insert(self,pattern:Union[str, __bytes__], insert_func:Callable[[Union[__bytes__]], Union[str, __bytes__]]):
         """
         Wraps :py:func:`ptcx.utils.langs.search_and_insert` for :py:func:`ptcx.BasePTC.bytes`.
         """
-        return langs.search_and_insert(self.bytes, pattern, insert_func)
+        self.bytes = langs.search_and_insert(self.bytes, pattern, insert_func)
 
     def sub(self,pattern:Union[str, __bytes__],repl:Union[str, bytes], **kwargs):
         """

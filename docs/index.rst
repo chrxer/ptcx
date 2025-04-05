@@ -29,6 +29,18 @@ Patch configuration
 .. literalinclude:: ../patch/main.py.ptcx
     :language: python
 
+Language support
+-----------------
+.. list-table::
+   :header-rows: 1
+
+   * - Language
+     - python package
+   * - cpp
+     - `tree-sitter-python <https://github.com/tree-sitter/tree-sitter-python>`_
+   * - python
+     - `tree-sitter-cpp <https://github.com/tree-sitter/tree-sitter-cpp>`_
+
 Reference
 -------------------
 .. autoclass:: ptcx.BasePTC

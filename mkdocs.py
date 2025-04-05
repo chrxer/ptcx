@@ -5,6 +5,8 @@ import http.server
 import socketserver
 import webbrowser
 import sys
+import traceback
+import logging
 from time import perf_counter
 from threading import Thread
 from sphinx.cmd.build import build_main
@@ -31,7 +33,11 @@ def serve(start_timeout:float=10):
         except OSError as e:
             if (perf_counter()-start)>=start_timeout:
                 raise e
-        break
+        except KeyboardInterrupt:
+            logging.error(traceback.format_exc())
+            exit(0)
+        else:
+            break
 
 
 if __name__ == "__main__":

@@ -3,10 +3,11 @@ various algorithms//utils for modifying bytes
 """
 from os import PathLike
 from pathlib import Path
-from typing import get_origin, get_args, Annotated, Callable, Union
+from typing import get_origin, get_args, Annotated, Callable, Union, List
 from importlib import import_module
 import re
 
+import orjson.orjson
 import sourcetypes
 from tree_sitter import Parser, Language
 import orjson
@@ -74,7 +75,7 @@ def search_and_insert(text:bytes, pattern:Union[str, bytes], insert_func:Callabl
 
     return updated_text
 
-def array_add(matched_text:Union[str, bytes], to_add:list) -> bytes:
+def array_add(matched_text:Union[str, bytes], to_add:List[Union[str, bytes]]) -> bytes:
     """
     extend array inside string. Accepts json5, returns json (with indent_2 and newlines)
     """
@@ -82,5 +83,9 @@ def array_add(matched_text:Union[str, bytes], to_add:list) -> bytes:
         matched_text = matched_text.decode("utf-8")
     _list = pyjson5.decode(matched_text) # pylint: disable=no-member
     assert isinstance(_list, list)
+    for i,item in enumerate(to_add):
+        if isinstance(item, bytes):
+            to_add[i]=item.decode("utf-8")
+
     _list.extend(to_add)
     return orjson.dumps(_list, option=orjson.OPT_APPEND_NEWLINE|orjson.OPT_INDENT_2) # pylint: disable=no-member

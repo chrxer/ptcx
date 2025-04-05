@@ -23,3 +23,8 @@ body[data-theme="light"] {
     }
   }
   
+/* Don't center tables */
+table.docutils {
+  margin-left: 0 !important;
+  margin-right: auto !important;
+}
