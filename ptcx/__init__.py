@@ -4,11 +4,12 @@ from pathlib import Path
 from typing import Union, Callable
 from os import PathLike
 import re
-from re import Match
+from tree_sitter import Parser, Tree, Node
 
 from ptcx.utils.fs import readf, writef
 from ptcx.utils import langs
-from tree_sitter import Parser, Tree
+from ptcx.ast import FuncSign
+
 
 __str__ = str # pylint: disable=invalid-name
 __bytes__ = bytes # pylint: disable=invalid-name
@@ -31,7 +32,7 @@ class BasePTC(ABC):
         self.srcroot=srcroot
         self.patchroot=patchroot
         self.file=file
-    
+
     @property
     def bytes(self) -> __bytes__:
         """
@@ -51,11 +52,12 @@ class BasePTC(ABC):
 
         # indicate that tree has changed
         self._tree = None
-    
+
     @property
     def lang(self):
         """
-        (programming) Language of the file to patch based on :py:func:`ptcx.BasePTC.file` and based on :py:func:`ptcx.BasePTC.bytes`.
+        (programming) Language of the file to patch based on :py:func:`ptcx.BasePTC.file` 
+        and based on :py:func:`ptcx.BasePTC.bytes`.
         """
         if self._lang is None:
             self.lang = self.file
@@ -64,7 +66,7 @@ class BasePTC(ABC):
     @lang.setter
     def lang(self, value:PathLike):
         self._lang = langs.guess(value)
-    
+
     @property
     def parser(self) -> Parser:
         """"
@@ -73,16 +75,18 @@ class BasePTC(ABC):
         if self._parser is None:
             self._parser = langs.get_parser(self.lang)
         return self._parser
-    
+
     @parser.setter
     def parser(self, value:Parser) -> str:
         assert isinstance(value, Parser)
         self._parser = value
-    
+
     @property
     def tree(self)->Tree:
         """"
-        :py:class:`tree_sitter.Tree` based on :py:func:`ptcx.BasePTC.parser`
+        :py:class:`tree_sitter.Tree` based on :py:func:`ptcx.BasePTC.parser`.
+
+        This is automatically updated when 
         """
         if self._tree is None:
             self._tree = self.parser.parse(self.bytes)
@@ -97,8 +101,9 @@ class BasePTC(ABC):
         """
         function to implement for patching
         """
-    
-    def insert(self,pattern:Union[str, __bytes__], insert_func:Callable[[Union[__bytes__]], Union[str, __bytes__]]):
+
+    def insert(self,pattern:Union[str, __bytes__],
+               insert_func:Callable[[Union[__bytes__]], Union[str, __bytes__]]):
         """
         Wraps :py:func:`ptcx.utils.langs.search_and_insert` for :py:func:`ptcx.BasePTC.bytes`.
         """
@@ -113,3 +118,13 @@ class BasePTC(ABC):
         if isinstance(repl, str):
             repl=repl.encode("utf-8")
         self.bytes = re.sub(pattern, repl, self.bytes, **kwargs)
+
+    def rplace_fn(self, function:__bytes__) -> __bytes__:
+        """
+        Replace function (based on signature) on :py:func:`ptcx.BasePTC.tree`
+
+        .. warning::
+            This only supports C++ with `tree-sitter-cpp <https://github.com/tree-sitter/tree-sitter-cpp>`_ yet
+        """
+        sign = FuncSign(function, lang_str=self.lang)
+        self.bytes = sign.rplace(self.tree.root_node)

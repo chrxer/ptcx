@@ -2,3 +2,4 @@ sourcetypes3>=0.1.0
 tree_sitter
 orjson
 pyjson5
+psutil

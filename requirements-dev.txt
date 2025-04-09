@@ -3,6 +3,7 @@ twine
 sphinx 
 sphinx-autodoc-typehints 
 sphinx-github-style
+sphinx-new-tab-link
 furo
 toml
 tree_sitter_cpp

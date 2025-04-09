@@ -12,6 +12,10 @@ A format for modularized AST-based patching of arbitary code.
 
 
 Installation
+(requires git cli to be installed)
 ```python
 python3 -m pip install ptcx
 ```
+
+## References
+- [](https://github.com/micheleberardi/kill_hack_port)

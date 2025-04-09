@@ -3,6 +3,7 @@ Installation
 
 `Source code <https://github.com/chrxer/ptcx>`_
 
+(requires git cli to be installed)
 .. code-block:: bash
 
    $ python -m pip install ptcx

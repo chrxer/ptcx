@@ -1,7 +1,8 @@
+"""""" # pylint: disable=empty-docstring
 from os import PathLike
 import shutil
 from pathlib import Path
-from typing import List, Callable, Union
+from typing import List, Callable
 import time
 import re
 
@@ -10,6 +11,9 @@ from ptcx.utils.wrap import exc
 from ptcx import BasePTC
 
 def ensure_is_git_repo(srcroot:Path):
+    """
+    Create local git repo if directory isn't already
+    """
     if not srcroot.joinpath(".git").exists():
         exc("git", "init", cwd=srcroot)
         exc("git", "add", "*", cwd=srcroot)
@@ -19,12 +23,15 @@ def ensure_is_git_repo(srcroot:Path):
 def path(_path:PathLike="", srcroot:PathLike="./src",patchroot:PathLike="./patch"):
     """
     Apply patch to src
+
+    .. warning:
+        `_path` argument is not implemented yet and will not have an effect
     """
     srcroot=Path(srcroot).absolute()
     patchroot=Path(patchroot).absolute()
 
     ensure_is_git_repo(srcroot)
-    _path = Path(patchroot).joinpath(_path)
+    # _path = Path(patchroot).joinpath(_path)
     cpr(patchroot, srcroot)
 
 def reset(srcroot:PathLike="./src"):
@@ -33,21 +40,24 @@ def reset(srcroot:PathLike="./src"):
     """
     srcroot=Path(srcroot).absolute()
     if not srcroot.joinpath(".git").exists():
-        raise EnvironmentError("Resevert all uncommited changes within git repository in src ist only possible if it is a git repository")
+        raise EnvironmentError("Resevert all uncommited changes within git repository in " \
+        "src ist only possible if it is a git repository")
     exc("git", "clean", "-d", "--force", cwd=srcroot)
     exc("git","reset", "--hard", "--recurse-submodules", cwd=srcroot)
 
-def _patch_file(_path:PathLike,srcroot:Path=Path.cwd().joinpath("src"),patchroot:Path=Path.cwd().joinpath("patch")):
+def _patch_file(_path:PathLike,srcroot:Path=Path.cwd().joinpath("src"),
+                patchroot:Path=Path.cwd().joinpath("patch")):
     rel_path = Path(str(_path)[:-5]).relative_to(patchroot)
     dstpath = srcroot.joinpath(rel_path)
     ptcxmod = fileimport(_path)
-    PTC = ptcxmod.PTC
+    PTC = ptcxmod.PTC # pylint: disable=invalid-name
     if issubclass(PTC, BasePTC):
         ptcinst = PTC(file=dstpath, srcroot=srcroot, patchroot=patchroot)
         ptcinst._patch() # pylint: disable=protected-access
     else:
-        raise ValueError(f"Expected class PTC (parent class of BasePTC), but got {PTC} at {rel_path}")
-    
+        raise ValueError(f"Expected class PTC (parent class of BasePTC), "
+                         f"but got {PTC} at {rel_path}")
+
 
 def _logpath(_path:str, names:List[str], patchroot:Path, srcroot:Path):
     ignores = []
@@ -64,24 +74,25 @@ def _logpath(_path:str, names:List[str], patchroot:Path, srcroot:Path):
                 print(f"\033[92m[cp] {_rel}\033[0m")
         elif name == "__pycache__":
             ignores.append(name)
-                
     return ignores
 
 def cpr(src:PathLike, dst:PathLike):
-    shutil.copytree(src, dst, dirs_exist_ok=True, ignore=lambda *a, **b:_logpath(*a, **b, srcroot=dst, patchroot=src))
+    """copy recursively (and patch over .ptcx files)"""
+    shutil.copytree(src, dst, dirs_exist_ok=True, ignore=lambda *a,
+                    **b:_logpath(*a, **b, srcroot=dst, patchroot=src))
 
 def search_and_insert(text:str, pattern:str, insert_func:Callable[[str], str]):
-        """
-        finds match & replaces inserts string at
-        """
-        match = re.search(pattern, text, flags=re.MULTILINE)
+    """
+    finds match & replaces inserts string at
+    """
+    match = re.search(pattern, text, flags=re.MULTILINE)
 
-        if not match:
-            raise ValueError(f"Pattern '{pattern}' not found in the text.")
+    if not match:
+        raise ValueError(f"Pattern '{pattern}' not found in the text.")
 
-        start, end = match.span(1)
-        matched_text = text[start:end]
-        modified_text = insert_func(matched_text)
-        updated_text = text[:start] + modified_text + text[end:]
+    start, end = match.span(1)
+    matched_text = text[start:end]
+    modified_text = insert_func(matched_text)
+    updated_text = text[:start] + modified_text + text[end:]
 
-        return updated_text
+    return updated_text
