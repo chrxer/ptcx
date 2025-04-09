@@ -1,3 +1,4 @@
+#!/usr/bin/env python 
 """""" # pylint: disable=empty-docstring
 
 from pathlib import Path
